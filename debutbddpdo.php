@@ -1,5 +1,7 @@
 <?php declare(strict_types = 1);
 
+//query
+
 $pdo = new PDO('mysql:host=localhost;dbname=php','root','');
 
 $posts = $pdo->query('SELECT * FROM posts');

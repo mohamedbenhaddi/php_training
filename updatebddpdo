@@ -1,0 +1,18 @@
+<?php declare(strict_types = 1);
+
+
+$post = [
+    'title' => 'titre mis a jour',
+    'body' => 'corps mis a jour',
+];
+
+
+
+$pdo = new PDO('mysql:host=localhost;dbname=php','root','');
+
+$req = $pdo->prepare('UPDATE posts SET title = :title, body = :body, reading_time = :reading_time WHERE id = 5');
+$req->bindParam(':title', $post['title']);
+$req->bindParam(':body', $post['body']);
+$req->bindValue(':reading_time', ceil(str_word_count($post['body']) / 238), PDO::PARAM_INT);
+$req->execute();
+

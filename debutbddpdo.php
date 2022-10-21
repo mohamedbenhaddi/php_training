@@ -37,7 +37,11 @@ $posts = [];
 if(isset($_GET['q']))
 {
     $pdo = new PDO('mysql:host=localhost;dbname=php','root','');
-    $posts = $pdo->prepare('SELECT * FROM posts WHERE title LIKE :q');
+    $posts = $pdo->prepare('SELECT title, body 
+                            FROM posts 
+                            WHERE title LIKE :q 
+                            OR body LIKE :q
+                            ORDER BY id DESC');
     $posts->bindValue(':q',"%{$_GET['q']}%");
     $posts->execute();
     $posts = $posts->fetchAll(PDO::FETCH_ASSOC);
@@ -62,6 +66,7 @@ if(isset($_GET['q']))
     <?php  foreach($posts as $post)
     {
         echo '<h1>' . $post['title'] . '</h1>';
+        echo $post['body'];
     }
     
     

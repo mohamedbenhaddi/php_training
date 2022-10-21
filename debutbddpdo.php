@@ -28,3 +28,44 @@ $posts->bindParam(':id', $id, PDO::PARAM_INT);
 $posts->execute();
 
 var_dump($posts->fetch(PDO::FETCH_ASSOC));
+
+// exemple moteur de recherche
+
+
+$posts = [];
+
+if(isset($_GET['q']))
+{
+    $pdo = new PDO('mysql:host=localhost;dbname=php','root','');
+    $posts = $pdo->prepare('SELECT * FROM posts WHERE title LIKE :q');
+    $posts->bindValue(':q',"%{$_GET['q']}%");
+    $posts->execute();
+    $posts = $posts->fetchAll(PDO::FETCH_ASSOC);
+
+}
+
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form>
+        <input type="text" name="q">
+
+    </form>
+    <?php  foreach($posts as $post)
+    {
+        echo '<h1>' . $post['title'] . '</h1>';
+    }
+    
+    
+    ?>
+
+</body>
+</html>
